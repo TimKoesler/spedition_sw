@@ -1,8 +1,12 @@
 package othr.sw.koesler.entity;
 
+import othr.sw.koesler.entity.util.StringIdEntity;
+
+import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
-public class Address {
+@Entity
+public class Address extends StringIdEntity {
 
     @OneToOne
     Location loc;

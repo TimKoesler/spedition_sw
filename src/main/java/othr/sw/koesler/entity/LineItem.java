@@ -1,8 +1,14 @@
 package othr.sw.koesler.entity;
 
+import othr.sw.koesler.entity.util.StringIdEntity;
+
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-public class LineItem {
+@Entity
+public class LineItem extends StringIdEntity {
+
+    private static long id_count = 1;
 
     @ManyToOne
     Order order;
@@ -10,10 +16,15 @@ public class LineItem {
     int lineItemNumber, amount;
     String description;
 
+    public LineItem() {
+    }
+
     public LineItem(int lineItemNumber, String description, int amount) {
         this.lineItemNumber = lineItemNumber;
         this.description = description;
         this.amount = amount;
+        super.id = order.getId() + "_" + id_count;
+        id_count++;
     }
 
     public int getAmount() {

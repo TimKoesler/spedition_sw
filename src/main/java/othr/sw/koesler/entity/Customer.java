@@ -2,16 +2,21 @@ package othr.sw.koesler.entity;
 
 import othr.sw.koesler.entity.util.GeneratedIdEntity;
 
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+@Entity
 public class Customer extends GeneratedIdEntity {
 
-    public static long id_count = 0;
+    public static long id_count = 1;
 
     String firstname, lastname;
 
     @ManyToOne
     Address address;
+
+    public Customer() {
+    }
 
     public Customer (String firstname, String lastname) {
         //Sequence ID

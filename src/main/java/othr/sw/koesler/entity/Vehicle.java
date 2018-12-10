@@ -2,19 +2,25 @@ package othr.sw.koesler.entity;
 
 import othr.sw.koesler.entity.util.GeneratedIdEntity;
 
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.awt.*;
 import java.util.Scanner;
 
+@Entity
 public class Vehicle extends GeneratedIdEntity {
-    public static long id_count = 0;
+    public static long id_count = 1;
 
     String model;
     Color color;
     int capacity, reach, fuelCapacity;
 
-    @ManyToMany
+    @ManyToOne
     Worker driver;
+
+    public Vehicle() {
+    }
 
     public Vehicle (String model, Color color, int capacity, int reach, int fuelCapacity) {
         super.id = this.id_count;

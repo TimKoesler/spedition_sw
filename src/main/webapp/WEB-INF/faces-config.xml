@@ -4,6 +4,59 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+
+        <navigation-case>
+            <from-outcome>home</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>requestTransport</from-outcome>
+            <to-view-id>/spedition/requestTransport.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>availabilitySummary</from-outcome>
+            <to-view-id>/spedition/availabilityConfirmation.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/spedition/login.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>register</from-outcome>
+            <to-view-id>/spedition/register.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>myOrders</from-outcome>
+            <to-view-id>/spedition/myOrders.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>myUser</from-outcome>
+            <to-view-id>/spedition/myUser.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>updatedUser</from-outcome>
+            <to-view-id>/spedition/updatedUser.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>orderLineItems</from-outcome>
+            <to-view-id>/spedition/orderLineItems.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>addressInformations</from-outcome>
+            <to-view-id>/spedition/addressInformations.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>orderSummary</from-outcome>
+            <to-view-id>/spedition/orderSummary.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>thankYouScreen</from-outcome>
+            <to-view-id>/spedition/thankYouScreen.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
 
 
 </faces-config>

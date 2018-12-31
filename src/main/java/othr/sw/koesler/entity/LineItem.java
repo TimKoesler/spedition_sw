@@ -1,49 +1,51 @@
 package othr.sw.koesler.entity;
 
-import othr.sw.koesler.entity.util.StringIdEntity;
+import othr.sw.koesler.entity.util.GeneratedIdEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class LineItem extends StringIdEntity {
+public class LineItem extends GeneratedIdEntity {
 
-    private static long id_count = 1;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Order order;
 
-    @ManyToOne
-    Order order;
-
-    int lineItemNumber, amount;
-    String description;
+    private int amount;
+    private String description;
 
     public LineItem() {
     }
 
-    public LineItem(int lineItemNumber, String description, int amount) {
-        this.lineItemNumber = lineItemNumber;
+    public LineItem(int amount, String description) {
         this.description = description;
         this.amount = amount;
-        super.id = order.getId() + "_" + id_count;
-        id_count++;
+    }
+
+    //Getter Setter
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public int getAmount() {
         return amount;
     }
 
-    public int getLineItemNumber() {
-        return lineItemNumber;
-    }
-
-    public Order getOrder() {
-        return order;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

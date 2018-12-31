@@ -1,0 +1,174 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.koesler.sw.othr/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="BookingServiceService" targetNamespace="http://service.koesler.sw.othr/">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://service.koesler.sw.othr/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://service.koesler.sw.othr/">
+            <xs:element name="createOrder" type="tns:createOrder"/>
+            <xs:element name="createOrderResponse" type="tns:createOrderResponse"/>
+            <xs:element name="getAllOrders" type="tns:getAllOrders"/>
+            <xs:element name="getAllOrdersResponse" type="tns:getAllOrdersResponse"/>
+            <xs:complexType name="getAllOrders">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="arg0" type="tns:customer"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="customer">
+                <xs:complexContent>
+                    <xs:extension base="tns:generatedIdEntity">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="address" type="tns:address"/>
+                            <xs:element minOccurs="0" name="firstname" type="xs:string"/>
+                            <xs:element minOccurs="0" name="lastname" type="xs:string"/>
+                            <xs:element minOccurs="0" name="password" type="xs:string"/>
+                            <xs:element minOccurs="0" name="user" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="generatedIdEntity">
+                <xs:complexContent>
+                    <xs:extension base="tns:singleIdEntity">
+                        <xs:sequence/>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType abstract="true" name="singleIdEntity">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="address">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="city" type="xs:string"/>
+                    <xs:element minOccurs="0" name="country" type="xs:string"/>
+                    <xs:element minOccurs="0" name="loc" type="tns:location"/>
+                    <xs:element name="PLZ" type="xs:int"/>
+                    <xs:element minOccurs="0" name="street" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="location">
+                <xs:sequence>
+                    <xs:element name="x_Coord" type="xs:int"/>
+                    <xs:element name="y_Coord" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getAllOrdersResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:order"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="order">
+                <xs:complexContent>
+                    <xs:extension base="tns:generatedIdEntity">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="customer" type="tns:customer"/>
+                            <xs:element minOccurs="0" name="destination" type="tns:address"/>
+                            <xs:element minOccurs="0" name="orderStatus" type="tns:orderStatus"/>
+                            <xs:element minOccurs="0" name="type" type="tns:orderType"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="createOrder">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="Username" type="xs:string"/>
+                    <xs:element minOccurs="0" name="Password" type="xs:string"/>
+                    <xs:element minOccurs="0" name="OrderType" type="tns:orderType"/>
+                    <xs:element minOccurs="0" name="PickUpAddress" type="tns:address"/>
+                    <xs:element minOccurs="0" name="DeliveryAddress" type="tns:address"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="LineItems" type="tns:lineItem"/>
+                    <xs:element name="arg6" type="xs:int"/>
+                    <xs:element minOccurs="0" name="arg7" type="xs:dateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="lineItem">
+                <xs:complexContent>
+                    <xs:extension base="tns:generatedIdEntity">
+                        <xs:sequence>
+                            <xs:element name="amount" type="xs:int"/>
+                            <xs:element minOccurs="0" name="description" type="xs:string"/>
+                            <xs:element minOccurs="0" name="order" type="tns:order"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="createOrderResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="tns:order"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="orderStatus">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="New"/>
+                    <xs:enumeration value="Planned"/>
+                    <xs:enumeration value="inProgess"/>
+                    <xs:enumeration value="Done"/>
+                    <xs:enumeration value="Cancelled"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="orderType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Human_Transport"/>
+                    <xs:enumeration value="Item_Transport"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="NullPointerException" type="tns:NullPointerException"/>
+            <xs:complexType name="NullPointerException">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="message" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getAllOrders">
+        <wsdl:part element="tns:getAllOrders" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAllOrdersResponse">
+        <wsdl:part element="tns:getAllOrdersResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="NullPointerException">
+        <wsdl:part element="tns:NullPointerException" name="NullPointerException"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createOrderResponse">
+        <wsdl:part element="tns:createOrderResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createOrder">
+        <wsdl:part element="tns:createOrder" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="BookingService">
+        <wsdl:operation name="getAllOrders">
+            <wsdl:input message="tns:getAllOrders" name="getAllOrders"> </wsdl:input>
+            <wsdl:output message="tns:getAllOrdersResponse" name="getAllOrdersResponse"> </wsdl:output>
+            <wsdl:fault message="tns:NullPointerException" name="NullPointerException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="createOrder">
+            <wsdl:input message="tns:createOrder" name="createOrder"> </wsdl:input>
+            <wsdl:output message="tns:createOrderResponse" name="createOrderResponse"> </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="BookingServiceServiceSoapBinding" type="tns:BookingService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getAllOrders">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getAllOrders">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getAllOrdersResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="NullPointerException">
+                <soap:fault name="NullPointerException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="createOrder">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="createOrder">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="createOrderResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="BookingServiceService">
+        <wsdl:port binding="tns:BookingServiceServiceSoapBinding" name="BookingServicePort">
+            <soap:address location="http://localhost:8080/spedition-1.0-SNAPSHOT/BookingService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

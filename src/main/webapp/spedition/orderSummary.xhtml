@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+
+</h:head>
+
+
+<h:body>
+    <ui:composition template="../WEB-INF/templates/basicTemplate.xhtml">
+        <ui:define name="content">
+
+            <h2>Order Summary</h2>
+            <f:view>
+                <h:form>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="Requested Order Type:"/>
+                        <h:outputLabel value="#{speditionModel.orderType}"/>
+
+                        <h:outputLabel value="Total freight weight (kg):"/>
+                        <h:outputLabel value="#{speditionModel.amount}"/>
+
+                        <h:outputLabel value="Date"/>
+                        <h:outputLabel value="#{speditionModel.date}"/>
+
+                        <h:outputLabel value="Time"/>
+                        <h:outputLabel value="#{speditionModel.time}"/>
+
+                    </h:panelGrid>
+                    <h:dataTable var="lineItems" value="#{speditionModel.lineItems}">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="Amount" />
+                            </f:facet>
+                            <h:outputText value="#{lineItems.amount}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="Description"/>
+                            </f:facet>
+                            <h:outputText value="#{lineItems.description}"/>
+                        </h:column>
+                    </h:dataTable>
+
+                    <h:commandButton value="Place Order" action="#{speditionModel.createOrder()}"/>
+                </h:form>
+            </f:view>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

@@ -26,11 +26,11 @@ public class TestModel implements Serializable {
  public void aendere() {
         System.out.println("WURDE GEKLICKT!!!!!!!!!!!!!!!!");
         this.counter++;
-        if(bookingService.checkAvailability(OrderType.Delivery, new Date(), 555) == true) {
+       /* if(bookingService.checkAvailability(OrderType.Item_Transport, new Date(), 555) == true) {
             System.out.println("AVAILABLE");
         } else {
             System.out.println("SORRY NOT SORRY");
-        }
+        }*/
     }
 
 

@@ -6,5 +6,5 @@ import othr.sw.koesler.entity.util.SingleIdEntityRepository;
 import javax.enterprise.context.Dependent;
 
 @Dependent
-public class BookingRepo extends SingleIdEntityRepository<String, Order> {
+public class OrderRepo extends SingleIdEntityRepository<String, Order> {
 }

@@ -2,30 +2,37 @@ package othr.sw.koesler.entity;
 
 import othr.sw.koesler.entity.util.GeneratedIdEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Customer extends GeneratedIdEntity {
 
-    public static long id_count = 1;
+    private String firstname, lastname, user, password;
 
-    String firstname, lastname;
+    @OneToOne
+    private Address address;
 
-    @ManyToOne
-    Address address;
+    @OneToMany(mappedBy = "customer")
+    private Collection<Order> orders = new ArrayList<>();
 
     public Customer() {
     }
 
-    public Customer (String firstname, String lastname) {
+    public Customer (String firstname, String lastname, Address address) {
         //Sequence ID
-        super.id = this.id_count;
-        this.id_count++;
-
         this.firstname = firstname;
         this.lastname = lastname;
+        this.address = address;
     }
+
+    public void addOrder(Order order) {
+        this.orders.add(order);
+    }
+
+    //Getter Setter
 
     public String getFirstname() {
         return this.firstname;
@@ -49,6 +56,22 @@ public class Customer extends GeneratedIdEntity {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

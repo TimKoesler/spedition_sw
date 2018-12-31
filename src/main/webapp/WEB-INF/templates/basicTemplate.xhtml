@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <h:outputStylesheet library="css" name="layout.css"/>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+
+
+<h:body>
+
+    <div id="top">
+        <ui:insert name="top">
+            <h2 id="headline">Spedition Koesler</h2><br/>
+            <h:form>
+                <h:commandLink value="Home" action="home"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <h:commandLink value="Request Transport" action="#{speditionModel.validateRequestTransport()}"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <h:commandLink value="My Orders" action="myOrders" rendered="#{speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{speditionModel.loggedIn}"/>
+                <h:commandLink value="My User" action="myUser" rendered="#{speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{speditionModel.loggedIn}"/>
+                <h:commandLink value="Log-Out" action="#{speditionModel.logout()}" rendered="#{speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{speditionModel.loggedIn}"/>
+                <h:commandLink value="Login" action="login" rendered="#{!speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{!speditionModel.loggedIn}"/>
+                <h:commandLink value="Register" action="register" rendered="#{!speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{!speditionModel.loggedIn}"/>
+            </h:form>
+
+        </ui:insert>
+    </div>
+    <div>
+        <div id="left">
+            <ui:insert name="left">
+                <h:outputText value="Logged in as:" rendered="#{speditionModel.loggedIn}"/><br/><br/>
+                <h:outputText value="#{speditionModel.lastname}" rendered="#{speditionModel.loggedIn}"/><br/>
+                <h:outputText value="#{speditionModel.firstname}" rendered="#{speditionModel.loggedIn}"/>
+            </ui:insert>
+        </div>
+        <div id="content" class="left_content">
+            <ui:insert name="content">
+                CONTENT
+            </ui:insert>
+        </div>
+    </div>
+    <div id="bottom">
+        <ui:insert name="bottom">
+            SW WS 18/19 Koesler Tim
+        </ui:insert>
+    </div>
+
+</h:body>
+</html>

@@ -1,8 +1,15 @@
 package othr.sw.koesler.entity.util;
 
-import javax.persistence.Embeddable;
-
-@Embeddable
 public enum OrderType {
-    PickUp, Delivery;
+    Human_Transport("Person Transport"), Item_Transport("Item Transport");
+
+    private final String label;
+
+    OrderType(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return this.label;
+    }
 }

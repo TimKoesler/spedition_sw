@@ -4,34 +4,33 @@ import othr.sw.koesler.entity.util.GeneratedIdEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import java.util.Date;
+import javax.persistence.OneToOne;
+import java.util.Calendar;
 
 @Entity
 public class Worker extends GeneratedIdEntity {
 
-    public static long id_count = 1;
+    private String name;
+    private boolean available;
+    private Calendar birthday;
 
-    String name;
-    boolean available;
-    @ManyToOne
+    @OneToOne
     private Address address;
-    Date birthday;
 
     public Worker() {
     }
 
     public Worker(String name) {
-        super.id = this.id_count;
-        id_count++;
+
         this.name = name;
         this.available = true;
     }
 
-    public Date getBirthday() {
+    public Calendar getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(Calendar birthday) {
         this.birthday = birthday;
     }
 

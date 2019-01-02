@@ -36,7 +36,7 @@
 
                 </h:panelGrid>
 
-                <h:commandButton value="Procceed to specify Order Details" action="orderLineItems"/>
+                <h:commandButton value="Procceed to specify Order Details" action="orderLineItems" rendered="#{speditionModel.availability}"/>
                 <h:commandButton value="Back" action="requestTransport"/>
                 <h:commandButton value="Cancel" action="home"/>
                 </h:form>

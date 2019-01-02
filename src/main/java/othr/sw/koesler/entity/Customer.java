@@ -12,7 +12,7 @@ public class Customer extends GeneratedIdEntity {
 
     private String firstname, lastname, user, password;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Address address;
 
     @OneToMany(mappedBy = "customer")

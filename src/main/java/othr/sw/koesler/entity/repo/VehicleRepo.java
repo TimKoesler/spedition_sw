@@ -1,10 +1,10 @@
 package othr.sw.koesler.entity.repo;
 
-import othr.sw.koesler.entity.Customer;
+import othr.sw.koesler.entity.Vehicle;
 import othr.sw.koesler.entity.util.SingleIdEntityRepository;
 
 import javax.enterprise.context.Dependent;
 
 @Dependent
-public class CustomerRepo extends SingleIdEntityRepository<Long, Customer> {
+public class VehicleRepo extends SingleIdEntityRepository<Long, Vehicle> {
 }

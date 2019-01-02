@@ -2,6 +2,7 @@ package othr.sw.koesler.entity;
 
 import othr.sw.koesler.entity.util.GeneratedIdEntity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -14,14 +15,13 @@ public class Worker extends GeneratedIdEntity {
     private boolean available;
     private Calendar birthday;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Address address;
 
     public Worker() {
     }
 
     public Worker(String name) {
-
         this.name = name;
         this.available = true;
     }

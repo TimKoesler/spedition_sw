@@ -28,7 +28,7 @@
                 <h:inputText value="#{speditionModel.lastname}"/>
 
                 <h:outputLabel value="PLZ: "/>
-                <h:inputText value="#{speditionModel.PLZ}"/>
+                <h:inputText binding="#{PLZ}"/>
 
                 <h:outputLabel value="City:"/>
                 <h:inputText value="#{speditionModel.city}"/>
@@ -47,7 +47,7 @@
 
 
             </h:panelGrid>
-            <h:commandButton value="Register" action="#{speditionModel.register()}"/>
+            <h:commandButton value="Register" action="#{speditionModel.register(PLZ.value)}"/>
             </h:form>
 
         </f:view>

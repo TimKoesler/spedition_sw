@@ -17,26 +17,40 @@
 
                 <h1>Order History</h1>
                 <f:view>
+                    <h:form>
                     <h:dataTable var="order" value="#{speditionModel.allOrders}">
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Order Nr." />
-                        </f:facet>
-                        <h:outputText value="#{order.id}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Status" />
-                        </f:facet>
-                        <h:outputText value="#{order.orderStatus}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Type" />
-                        </f:facet>
-                        <h:outputText value="#{order.type}"/>
-                    </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Order Nr." />
+                            </f:facet>
+                            <h:outputText  value="#{order.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Status" />
+                            </f:facet>
+                            <h:outputText  value="#{order.orderStatus}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Type" />
+                            </f:facet>
+                            <h:outputText  value="#{order.type.getLabel()}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Date" />
+                            </f:facet>
+                            <h:outputText  value="#{order.dueDate.time}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Action" />
+                            </f:facet>
+                            <h:commandButton value="Cancel Order" action="#{speditionModel.cancelOrder(order.id)}" rendered="#{speditionModel.isCancellable(order.orderStatus)}"/>
+                        </h:column>
                     </h:dataTable>
+                    </h:form>
 
                 </f:view>
             </ui:define>

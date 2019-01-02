@@ -3,13 +3,18 @@ package othr.sw.koesler.entity;
 import othr.sw.koesler.entity.util.StringIdEntity;
 
 import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.Random;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class Address extends StringIdEntity {
 
     private final static int LIMIT = 100;
 
+    @XmlTransient
     private Location loc;
 
     private String street, city, country;
@@ -33,6 +38,7 @@ public class Address extends StringIdEntity {
         this.loc = new Location();
         this.loc.setX_Coord(r.nextInt(LIMIT));
         this.loc.setY_Coord(r.nextInt(LIMIT));
+        super.id = this.toString();
     }
 
     public Address(int x_Coord, int y_Coord) {

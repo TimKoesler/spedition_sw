@@ -8,6 +8,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.security.auth.login.LoginException;
 import javax.transaction.Transactional;
 import java.io.Serializable;
 
@@ -20,7 +21,7 @@ public class UserService implements Serializable {
     private CustomerRepo customerRepo;
 
     @Transactional
-    public Customer login(String user, String password) {
+    public Customer login(String user, String password) throws LoginException {
         // customerRepo.getAll();
         for (Customer c : customerRepo.getAll()) {
             if (c.getUser().equals(user)) {
@@ -29,7 +30,7 @@ public class UserService implements Serializable {
                 }
             }
         }
-        return null;
+        throw new LoginException("Credentials not found!");
     }
 
     @Transactional

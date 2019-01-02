@@ -4,14 +4,17 @@ import othr.sw.koesler.entity.Address;
 import othr.sw.koesler.entity.Customer;
 import othr.sw.koesler.entity.LineItem;
 import othr.sw.koesler.entity.Order;
+import othr.sw.koesler.entity.util.OrderStatus;
 import othr.sw.koesler.service.BookingService;
 import othr.sw.koesler.entity.util.OrderType;
+import othr.sw.koesler.service.InitService;
 import othr.sw.koesler.service.UserService;
 
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.security.auth.login.LoginException;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.text.ParseException;
@@ -32,8 +35,8 @@ public class SpeditionModel implements Serializable {
     private List<LineItem> lineItems = new ArrayList<LineItem>();
     private int amount = 0;
     private boolean availability = false;
-    private String date = "DD.MM.YYYY";
-    private String time = "HH:MM";
+    private String date = "DD.MM.YYYY (Format)";
+    private String time = "HH:MM (Format)";
     private Calendar tempTime = Calendar.getInstance();
     private Address destination;
     //ERRORS
@@ -47,12 +50,14 @@ public class SpeditionModel implements Serializable {
     private Customer tempCustomer;
     //Register + Temp Var for Data Save
     private String firstname, lastname, street, city, country;
-    private int PLZ;
+    private int PLZ = 0;
 
     @Inject
     private BookingService bookingService;
     @Inject
     private UserService userService;
+    @Inject
+    private InitService initService;
 
     @Inject
     private Conversation conversation;
@@ -98,18 +103,23 @@ public class SpeditionModel implements Serializable {
 
 
     public String login() {
+
+        /* this.initService.init(); //One time only!!*/
+
         if(this.conversation.isTransient()) {
             this.conversation.begin();
         }
         System.out.println("Tried to login!");
-        Customer customer = userService.login(this.user, this.password);
-        if(customer != null) {
+        try {
+            Customer customer = userService.login(this.user, this.password);
             this.tempCustomer = customer;
             this.updateUserInfo("GET");
             this.loggedIn = true;
             this.error = false;
             return "home";
-        } else {
+
+        } catch (LoginException l) {
+            System.out.println(l.getCause());
             this.error = true;
             this.errorMsg = "Username or Password invalid!";
             return null;
@@ -124,10 +134,11 @@ public class SpeditionModel implements Serializable {
         return "home";
     }
 
-    public String register() {
+    public String register(String PLZ) {
         if(this.conversation.isTransient()) {
             this.conversation.begin();
         }
+        this.PLZ = Integer.parseInt(PLZ);
         System.out.println("Data: " + this.firstname + " " + this.lastname + " " +  new Address(this.street, this.city, this.country, this.PLZ) + " " +  this.user + " " +  this.password);
         if(this.firstname != null || this.lastname != null || this.PLZ != 0 || this.user != null || this.password != null) {
             this.tempCustomer = this.userService.register(this.firstname, this.lastname, new Address(this.street, this.city, this.country, this.PLZ), this.user, this.password);
@@ -199,6 +210,18 @@ public class SpeditionModel implements Serializable {
             return "YES";
         else
             return "NO";
+    }
+
+    public void cancelOrder(int id) {
+        this.bookingService.cancelOrder(id);
+    }
+
+    public boolean isCancellable(OrderStatus status) {
+        if(status == OrderStatus.Cancelled || status == OrderStatus.Done) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     //Getter and Setter

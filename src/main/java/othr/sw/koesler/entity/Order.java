@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Table(name = "Sped_Order")
 public class Order extends GeneratedIdEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
@@ -21,10 +22,10 @@ public class Order extends GeneratedIdEntity {
 
     //TODO Will ich beide in der DB? Eigentlich schon falls source vom customer abweicht. Benennen, sodass kein Problem mehr mit gleichen Spalten gibt?
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Address source;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Address destination;
 
     private Calendar dueDate;
@@ -35,11 +36,8 @@ public class Order extends GeneratedIdEntity {
 
     }
 
-    public Order(Customer customer, Address source, Address destination, Calendar dueDate) {
+    public Order(Customer customer, Calendar dueDate) {
 
-        //TODO PLZ Error?
-        this.source = source;
-        this.destination = destination; //TODO Wirklich so?
         this.customer = customer;
         this.dueDate = dueDate;
         this.orderStatus = OrderStatus.New;
@@ -83,6 +81,30 @@ public class Order extends GeneratedIdEntity {
 
     //Getter Setter
 
+
+    public Calendar getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Calendar dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Collection<LineItem> getLineitems() {
+        return lineitems;
+    }
+
+    public void setLineitems(Collection<LineItem> lineitems) {
+        this.lineitems = lineitems;
+    }
+
+    public Address getSource() {
+        return source;
+    }
+
+    public void setSource(Address source) {
+        this.source = source;
+    }
 
     public Address getDestination() {
         return destination;

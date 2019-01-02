@@ -5,7 +5,6 @@ import othr.sw.koesler.entity.repo.OrderRepo;
 import othr.sw.koesler.entity.util.OrderStatus;
 
 import javax.ejb.*;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,7 +12,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-@ApplicationScoped
+@Singleton
+@Startup
 public class TransportService {
 
     @PersistenceContext(unitName = "speditionPU")
@@ -24,7 +24,7 @@ public class TransportService {
 
     @Schedule (
             hour="*",
-            minute = "*",
+            minute = "*/5",
             persistent = false
     )
     private void checkForOrders() {
@@ -32,13 +32,16 @@ public class TransportService {
         Calendar today = Calendar.getInstance();
         today.setTime(new Date());
         for(Order o : orderRepo.getAll()) {
+            //irrelevant
+            if(o.getOrderStatus() == OrderStatus.Cancelled || o.getOrderStatus() == OrderStatus.Done  || o.getOrderStatus() == OrderStatus.inProgess)
+                continue;
             if(o.getDueDate().get(Calendar.YEAR) == today.get(Calendar.YEAR)) {
                 if(o.getDueDate().get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR))  {
                     //If today
                     o.setOrderStatus(OrderStatus.Planned);
                     em.persist(o);
                     if(o.getDueDate().get(Calendar.HOUR_OF_DAY) == today.get(Calendar.HOUR_OF_DAY)){
-                        if(o.getOrderStatus() == OrderStatus.New) {
+                        if(o.getOrderStatus() == OrderStatus.Planned) {
                             pickUp(o);
                         }
                     }

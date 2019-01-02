@@ -36,6 +36,11 @@ h3 {
     color: red;
 }
 
+.required label:after {
+    content: "*";
+    color: red;
+}
+
 a:link, a:visited {
     color: #045491;
     font-weight : bold;

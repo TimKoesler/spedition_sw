@@ -17,35 +17,36 @@
             <f:view>
 
             <h2>Adress Information</h2>
+            <h:outputText styleClass="errorMsg" value="#{speditionModel.errorMsg}" rendered="#{speditionModel.error}"/>
             <h:form>
             <h3>Pick-Up Adress</h3>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="Street:"/>
+                    <h:outputLabel styleClass="required" value="Street:"/>
                     <h:inputText value="#{speditionModel.street}"/>
 
-                    <h:outputLabel value="City:"/>
+                    <h:outputLabel styleClass="required" value="City:"/>
                     <h:inputText value="#{speditionModel.city}"/>
 
-                    <h:outputLabel value="PLZ:"/>
+                    <h:outputLabel styleClass="required" value="PLZ:"/>
                     <h:inputText value="#{speditionModel.PLZ}"/>
 
-                    <h:outputLabel value="Country:"/>
+                    <h:outputLabel styleClass="required" value="Country:"/>
                     <h:inputText value="#{speditionModel.country}"/>
 
                 </h:panelGrid>
 
                 <h3>Delivery Adress</h3>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="Street:"/>
+                    <h:outputLabel styleClass="required" value="Street:"/>
                     <h:inputText binding="#{streetDest}" />
 
-                    <h:outputLabel value="City:"/>
+                    <h:outputLabel styleClass="required" value="City:"/>
                     <h:inputText binding="#{cityDest}" />
 
-                    <h:outputLabel value="PLZ:"/>
+                    <h:outputLabel styleClass="required" value="PLZ:"/>
                     <h:inputText binding="#{plzDest}" />
 
-                    <h:outputLabel value="Country:"/>
+                    <h:outputLabel styleClass="required" value="Country:"/>
                     <h:inputText binding="#{countryDest}" />
 
                 </h:panelGrid>

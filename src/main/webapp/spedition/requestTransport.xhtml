@@ -19,18 +19,18 @@
                         <h:outputText styleClass="errorMsg" value="#{speditionModel.errorMsg}" rendered="#{speditionModel.error}"/>
 
                         <h:panelGrid columns="2">
-                            <h:outputLabel value="Transport Type:" />
-                            <h:selectOneMenu value="#{speditionModel.orderType}">
+                            <h:outputLabel styleClass="required" value="Transport Type:" />
+                            <h:selectOneMenu  value="#{speditionModel.orderType}">
                                 <f:selectItems value="#{transportTypeConverter.transportValues}"/>
                             </h:selectOneMenu>
 
-                            <h:outputLabel value="Weight of freight (kg):"/>
+                            <h:outputLabel styleClass="required" value="Weight of freight (kg):"/>
                             <h:inputText value="#{speditionModel.amount}"/>
 
-                            <h:outputLabel value="Date"/>
+                            <h:outputLabel styleClass="required" value="Date"/>
                             <h:inputText value="#{speditionModel.date}"/>
 
-                            <h:outputLabel value="Time"/>
+                            <h:outputLabel styleClass="required" value="Time"/>
                             <h:inputText value="#{speditionModel.time}"/>
 
                         </h:panelGrid>

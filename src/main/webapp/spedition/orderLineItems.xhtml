@@ -15,6 +15,7 @@
     <ui:composition template="../WEB-INF/templates/basicTemplate.xhtml">
         <ui:define name="content">
             <f:view>
+                <h:outputText styleClass="errorMsg" value="#{speditionModel.errorMsg}" rendered="#{speditionModel.error}"/>
                 <h:form>
                     <h:panelGrid columns="2">
                         <h:outputLabel value="Amount"/>
@@ -25,7 +26,7 @@
                     </h:panelGrid>
                     <h:commandButton value="Add" action="#{speditionModel.addLineItem(amount.value, lineItem.value)}" />
 
-                    <h:commandButton value="Procceed to Address Information" action="addressInformations"/>
+                    <h:commandButton value="Procceed to Address Information" action="#{speditionModel.validateLineitems()}"/>
                     <h:commandButton value="Back" action="requestTransport"/>
                     <h:commandButton value="Cancel" action="home"/>
 

@@ -14,14 +14,15 @@
 
 #bottom {
     position: relative;
-    background-color: #c2dfef;
+    background-color: #000000;
     padding: 5px;
     margin: 10px 0px 0px 0px;
+    color: white;
 }
 
 #left {
     float: left;
-    background-color: #ece3a5;
+    background-color: #045491;
     padding: 5px;
     width: 150px;
 }

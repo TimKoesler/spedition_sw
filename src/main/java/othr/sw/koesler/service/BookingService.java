@@ -43,8 +43,11 @@ public class BookingService implements Serializable {
     //Frontend Method
     @Transactional
     @WebMethod(exclude = true)
-    public Order createOrder(Customer customer, OrderType type, Address source, Address destination, List<LineItem> items, Calendar date) {
+    public Order createOrder(Customer customer, OrderType type, Address source, Address destination, List<LineItem> items, Calendar date) throws NullPointerException {
         //TODO
+        if(customer == null || type == null || source == null || destination == null || items == null || date == null) {
+            throw new NullPointerException("One of the Order Arguments is null");
+        }
         Order newOrder = new Order(customer, date);
         newOrder = checkAddress(newOrder, source, destination);
         newOrder.setType(type);

@@ -7,7 +7,6 @@ import othr.sw.koesler.entity.Order;
 import othr.sw.koesler.entity.util.OrderStatus;
 import othr.sw.koesler.service.BookingService;
 import othr.sw.koesler.entity.util.OrderType;
-import othr.sw.koesler.service.InitService;
 import othr.sw.koesler.service.UserService;
 
 import javax.enterprise.context.Conversation;
@@ -32,7 +31,7 @@ public class SpeditionModel implements Serializable {
 
     private Order tempOrder;
     private OrderType orderType = OrderType.Item_Transport;
-    private List<LineItem> lineItems = new ArrayList<LineItem>();
+    private List<LineItem> lineItems = new ArrayList<>();
     private int amount = 0;
     private boolean availability = false;
     private String date = "DD.MM.YYYY (Format)";
@@ -56,8 +55,6 @@ public class SpeditionModel implements Serializable {
     private BookingService bookingService;
     @Inject
     private UserService userService;
-    @Inject
-    private InitService initService;
 
     @Inject
     private Conversation conversation;
@@ -81,6 +78,17 @@ public class SpeditionModel implements Serializable {
         }
     }
 
+    public String validateLineitems() {
+            if(lineItems.isEmpty()) {
+                this.errorMsg = "Please add at least a single line item for a valid order!";
+                this.error = true;
+                return null;
+            } else {
+                this.error = false;
+                return "addressInformations";
+            }
+    }
+
     public void addLineItem(int amount, String description) {
         this.lineItems.add(new LineItem(amount, description));
     }
@@ -91,20 +99,42 @@ public class SpeditionModel implements Serializable {
 
 
     public String saveDestination (String streetDest, String cityDest, String countryDest, int PLZDest) {
-        this.destination = new Address(streetDest, cityDest, countryDest, PLZDest);
-        return "orderSummary";
+        if(streetDest == null || cityDest == null || countryDest == null || PLZDest == 0 || this.street == null || this.city == null || this.country == null || this.PLZ == 0) {
+            this.errorMsg = "Please fill out all the Address Information";
+            this.error = true;
+            return null;
+        } else {
+            this.error = false;
+            this.destination = new Address(streetDest, cityDest, countryDest, PLZDest);
+            return "orderSummary";
+        }
     }
 
     public String createOrder() {
         //TODO Error Handling
-        bookingService.createOrder(this.tempCustomer, this.orderType, new Address(this.street, this.city, this.country, this.PLZ), this.destination, this.lineItems, this.tempTime);
+        try {
+            bookingService.createOrder(this.tempCustomer, this.orderType, new Address(this.street, this.city, this.country, this.PLZ), this.destination, this.lineItems, this.tempTime);
+            resetVars();
+        } catch (NullPointerException e) {
+            System.out.println("Argument Null @: " + e.getCause());
+            this.errorMsg = "Please fill out all the fields!";
+            this.error = true;
+        }
         return "thankYouScreen";
     }
 
+    private void resetVars() {
+        this.orderType = null;
+        this.destination = null;
+        this.street = null;
+        this.country = null;
+        this.PLZ = 0;
+        this.city = null;
+        this.lineItems = null;
+        this.tempTime = null;
+    }
 
     public String login() {
-
-        /* this.initService.init(); //One time only!!*/
 
         if(this.conversation.isTransient()) {
             this.conversation.begin();

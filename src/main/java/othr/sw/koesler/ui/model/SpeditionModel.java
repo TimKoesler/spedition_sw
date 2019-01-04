@@ -18,24 +18,23 @@ import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Named
 @ConversationScoped
 public class SpeditionModel implements Serializable {
 
-    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    private final static SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     private Order tempOrder;
     private OrderType orderType = OrderType.Item_Transport;
     private List<LineItem> lineItems = new ArrayList<>();
     private int amount = 0;
     private boolean availability = false;
-    private String date = "DD.MM.YYYY (Format)";
-    private String time = "HH:MM (Format)";
+    private String date;
+//    private Date date;
+    private String time;
     private Calendar tempTime = Calendar.getInstance();
     private Address destination;
     //ERRORS
@@ -67,7 +66,7 @@ public class SpeditionModel implements Serializable {
             return null;
         } else {
             try {
-                this.tempTime.setTime(dateFormat.parse(this.date + " " + this.time));
+                this.tempTime.setTime(dateTimeFormat.parse(dateFormat.parse(this.date) + " " + this.time));
                 this.availability = this.bookingService.checkAvailability(this.orderType, this.amount, this.tempTime);
                 this.error = false;
                 return "availabilitySummary";

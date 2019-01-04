@@ -21,8 +21,8 @@
                         <h:outputLabel value="Amount"/>
                         <h:outputLabel value="Descritption"/>
 
-                        <h:inputText binding="#{amount}" />
-                        <h:inputText binding="#{lineItem}" />
+                        <h:inputText binding="#{amount}" class="form-control"/>
+                        <h:inputText binding="#{lineItem}" class="form-control"/>
                     </h:panelGrid>
                     <h:commandButton value="Add" action="#{speditionModel.addLineItem(amount.value, lineItem.value)}" />
 

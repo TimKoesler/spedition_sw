@@ -18,6 +18,7 @@ import javax.persistence.TypedQuery;
 import javax.security.auth.login.LoginException;
 import javax.transaction.Transactional;
 import java.io.Serializable;
+import java.security.InvalidParameterException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -58,10 +59,13 @@ public class BookingService implements Serializable {
 
     //WebService Interface
     @Transactional @Protokollieren
-    public Order createOrder(@WebParam(name="Username") String user, @WebParam(name="Password") String password, @WebParam(name="OrderType") OrderType type, @WebParam(name="PickUpAddress") Address source, @WebParam(name="DeliveryAddress")Address destination, @WebParam(name="LineItems")List<LineItem> items, @WebParam(name="AmountKG") int amount, @WebParam(name = "Date") Calendar date) throws LoginException {
+    public Order createOrder(@WebParam(name="Username") String user, @WebParam(name="Password") String password, @WebParam(name="OrderType") OrderType type, @WebParam(name="PickUpAddress") Address source, @WebParam(name="DeliveryAddress")Address destination, @WebParam(name="LineItems")List<LineItem> items, @WebParam(name="AmountKG") int amount, @WebParam(name = "Date") Calendar date) throws LoginException, InvalidParameterException {
         //Login
         try {
             Customer c = userService.login(user, password);
+            if(source == null) {
+                source = c.getAddress();
+            }
             //Check Order
             if(checkAvailability(type, amount, date)) {
                 Order newOrder = new Order(c, date);
@@ -73,15 +77,16 @@ public class BookingService implements Serializable {
                 }
                 newOrder.setType(type);
                 newOrder.setLineitems(items);
-                checkAddress(newOrder, source, destination);
+                newOrder = checkAddress(newOrder, source, destination);
+                orderRepo.persist(newOrder);
                 return newOrder;
             } else {
                 //TODO non availaible Handling
-                return null;
+                throw new InvalidParameterException("Please check your parameters, seems like something is null!");
             }
         } catch (LoginException l) {
             //TODO let user know that he fucked up
-            return null;
+            throw new LoginException("Credentials not valid");
         }
     }
 

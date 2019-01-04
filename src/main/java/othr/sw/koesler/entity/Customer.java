@@ -3,14 +3,21 @@ package othr.sw.koesler.entity;
 import othr.sw.koesler.entity.util.GeneratedIdEntity;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
+@XmlAccessorType(value = XmlAccessType.FIELD)
 public class Customer extends GeneratedIdEntity {
 
-    private String firstname, lastname, user, password;
+    private String firstname, lastname, user;
+
+    @XmlTransient
+    private String password;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     private Address address;
@@ -33,7 +40,6 @@ public class Customer extends GeneratedIdEntity {
     }
 
     //Getter Setter
-
     public String getFirstname() {
         return this.firstname;
     }

@@ -22,32 +22,32 @@
             <h3>Pick-Up Adress</h3>
                 <h:panelGrid columns="2">
                     <h:outputLabel styleClass="required" value="Street:"/>
-                    <h:inputText value="#{speditionModel.street}"/>
+                    <h:inputText value="#{speditionModel.street}" class="form-control"/>
 
                     <h:outputLabel styleClass="required" value="City:"/>
-                    <h:inputText value="#{speditionModel.city}"/>
+                    <h:inputText value="#{speditionModel.city}" class="form-control"/>
 
                     <h:outputLabel styleClass="required" value="PLZ:"/>
-                    <h:inputText value="#{speditionModel.PLZ}"/>
+                    <h:inputText value="#{speditionModel.PLZ}" class="form-control"/>
 
                     <h:outputLabel styleClass="required" value="Country:"/>
-                    <h:inputText value="#{speditionModel.country}"/>
+                    <h:inputText value="#{speditionModel.country}" class="form-control"/>
 
                 </h:panelGrid>
 
                 <h3>Delivery Adress</h3>
                 <h:panelGrid columns="2">
                     <h:outputLabel styleClass="required" value="Street:"/>
-                    <h:inputText binding="#{streetDest}" />
+                    <h:inputText binding="#{streetDest}" class="form-control"/>
 
                     <h:outputLabel styleClass="required" value="City:"/>
-                    <h:inputText binding="#{cityDest}" />
+                    <h:inputText binding="#{cityDest}" class="form-control"/>
 
                     <h:outputLabel styleClass="required" value="PLZ:"/>
-                    <h:inputText binding="#{plzDest}" />
+                    <h:inputText binding="#{plzDest}" class="form-control"/>
 
                     <h:outputLabel styleClass="required" value="Country:"/>
-                    <h:inputText binding="#{countryDest}" />
+                    <h:inputText binding="#{countryDest}" class="form-control"/>
 
                 </h:panelGrid>
                 <h:commandButton value="Summary" action="#{speditionModel.saveDestination(streetDest.value, cityDest.value, countryDest.value, plzDest.value)}"/>

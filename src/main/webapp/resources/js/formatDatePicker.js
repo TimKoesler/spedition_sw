@@ -1,8 +1,7 @@
-$(document).ready(function() {
-    $(".datepicker").datepicker({
-        dateFormat: 'dd MM, yy',
-        changeMonth: true,
-        changeYear: true,
-        yearRange: "1960:2017"
-    });
-});
+// $(document).ready(function() {
+//     $(".datepicker").datepicker({
+//         dateFormat: 'dd MM, yy',
+//         yearRange: "2018:2019"
+//     });
+// });
+$('.date-picker').datepicker();

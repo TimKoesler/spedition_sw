@@ -20,7 +20,6 @@ public class Order extends GeneratedIdEntity {
     @OneToMany(fetch = FetchType.LAZY)
     private Collection<Vehicle> vehicles = new ArrayList<>();
 
-    //TODO Will ich beide in der DB? Eigentlich schon falls source vom customer abweicht. Benennen, sodass kein Problem mehr mit gleichen Spalten gibt?
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Address source;
@@ -31,6 +30,7 @@ public class Order extends GeneratedIdEntity {
     private Calendar dueDate;
     private OrderType type;
     private OrderStatus orderStatus;
+    private Long id;
 
     public Order() {
 
@@ -38,6 +38,7 @@ public class Order extends GeneratedIdEntity {
 
     public Order(Customer customer, Calendar dueDate) {
 
+        this.id = this.getId();
         this.customer = customer;
         this.dueDate = dueDate;
         this.orderStatus = OrderStatus.New;
@@ -65,9 +66,14 @@ public class Order extends GeneratedIdEntity {
         // vehicle.setStatus(<ENUM>) TODO
     }
 
-    private double calcDuration() {
-        return 0;
-        //TODO
+    public double calcDuration() {
+        if(this.source != null && this.destination != null) {
+            int x = Math.abs(this.source.getLoc().getX_Coord() - this.destination.getLoc().getY_Coord());
+            int y = Math.abs(this.source.getLoc().getY_Coord() - this.destination.getLoc().getY_Coord());
+            return Math.hypot(x, y);
+        } else {
+            return 0;
+        }
     }
 
     private void assignVehicle() {

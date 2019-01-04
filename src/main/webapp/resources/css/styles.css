@@ -23,9 +23,17 @@ h2 {
     color: black;
 }
 
+#left {
+    color: white;
+    font-weight: bold;
+}
 
 #headline {
     color: white;
+}
+
+#bottom {
+    font-style: oblique;
 }
 
 h3 {

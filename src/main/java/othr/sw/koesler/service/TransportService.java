@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 @Singleton
@@ -28,7 +29,6 @@ public class TransportService {
             persistent = false
     )
     private void checkForOrders() {
-        System.out.println("Checking for due orders.....");
         Calendar today = Calendar.getInstance();
         today.setTime(new Date());
         for(Order o : orderRepo.getAll()) {
@@ -51,15 +51,24 @@ public class TransportService {
     }
 
     private void pickUp(Order o) {
-        System.out.println("Going to pickup LineItems...");
+        System.out.println("Going to pickup LineItems at..." + o.getSource());
         o.setOrderStatus(OrderStatus.inProgess);
         em.merge(o);
         //TODO on response deliver
-        deliver(o);
+        try {
+            //Wait till its there
+            TimeUnit.MINUTES.sleep(Double.doubleToLongBits(o.calcDuration()));
+            this.deliver(o);
+        } catch(InterruptedException e) {
+            //Set it back to planned for redelivery
+            System.out.println(e.getCause());
+            o.setOrderStatus(OrderStatus.Planned);
+            em.merge(o);
+        }
     }
 
     private void deliver(Order o) {
-        System.out.println("On Delivery...");
+        System.out.println("Reached Delivery Address..." + o.getDestination());
         //DO STUFF
         o.setOrderStatus(OrderStatus.Done);
         em.merge(o);

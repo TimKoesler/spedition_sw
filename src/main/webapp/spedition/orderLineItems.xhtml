@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
 
 <h:head>
 
@@ -26,9 +27,9 @@
                     </h:panelGrid>
                     <h:commandButton value="Add" action="#{speditionModel.addLineItem(amount.value, lineItem.value)}" />
 
-                    <h:commandButton value="Procceed to Address Information" action="#{speditionModel.validateLineitems()}"/>
-                    <h:commandButton value="Back" action="requestTransport"/>
-                    <h:commandButton value="Cancel" action="home"/>
+                    <b:commandButton value="Procceed to Address Information" action="#{speditionModel.validateLineitems()}"/>
+                    <b:commandButton value="Back" action="requestTransport"/>
+                    <b:commandButton value="Cancel" action="home"/>
 
                     <h:dataTable var="lineItems" value="#{speditionModel.lineItems}">
                         <h:column>
@@ -47,7 +48,7 @@
                             <f:facet name="header">
                                 <h:outputText value="Actions" />
                             </f:facet>
-                            <h:commandButton value="remove" action="#{speditionModel.removeLineItem(lineItems)}"/>
+                            <b:commandButton value="remove" action="#{speditionModel.removeLineItem(lineItems)}"/>
                         </h:column>
                     </h:dataTable>
                 </h:form>

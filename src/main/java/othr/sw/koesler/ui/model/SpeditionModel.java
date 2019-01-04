@@ -26,6 +26,7 @@ public class SpeditionModel implements Serializable {
 
     private final static SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH.mm");
 
     private Order tempOrder;
     private OrderType orderType = OrderType.Item_Transport;
@@ -66,7 +67,7 @@ public class SpeditionModel implements Serializable {
             return null;
         } else {
             try {
-                this.tempTime.setTime(dateTimeFormat.parse(dateFormat.parse(this.date) + " " + this.time));
+                this.tempTime.setTime(dateTimeFormat.parse(dateFormat.parse(this.date) + " " + timeFormat.parse(this.time)));
                 this.availability = this.bookingService.checkAvailability(this.orderType, this.amount, this.tempTime);
                 this.error = false;
                 return "availabilitySummary";

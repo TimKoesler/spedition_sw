@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
 
 <h:head>
 
@@ -50,9 +51,9 @@
                     <h:inputText binding="#{countryDest}" class="form-control"/>
 
                 </h:panelGrid>
-                <h:commandButton value="Summary" action="#{speditionModel.saveDestination(streetDest.value, cityDest.value, countryDest.value, plzDest.value)}"/>
-                <h:commandButton value="Back" action="orderLineItems"/>
-                <h:commandButton value="Cancel" action="home"/>
+                <b:commandButton value="Summary" action="#{speditionModel.saveDestination(streetDest.value, cityDest.value, countryDest.value, plzDest.value)}"/>
+                <b:commandButton value="Back" action="orderLineItems"/>
+                <b:commandButton value="Cancel" action="home"/>
             </h:form>
              </f:view>
         </ui:define>

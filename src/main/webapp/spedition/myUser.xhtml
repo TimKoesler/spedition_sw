@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
 <h:head>
 
 </h:head>
@@ -41,8 +42,8 @@
                     <h:inputText value="#{speditionModel.street}"/>
 
                 </h:panelGrid>
-                <h:commandButton value="Update Details" action="#{speditionModel.userUpdate()}"/><br/>
-                <h:commandButton value="Delete User" action="#{speditionModel.deleteUser()}"/>
+                <b:commandButton value="Update Details" action="#{speditionModel.userUpdate()}"/><br/>
+                <b:commandButton value="Delete User" action="#{speditionModel.deleteUser()}"/>
                 </h:form>
             </f:view>
         </ui:define>

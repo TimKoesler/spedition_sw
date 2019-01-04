@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
 
 <h:head>
 
@@ -36,9 +37,9 @@
 
                 </h:panelGrid>
 
-                <h:commandButton value="Procceed to specify Order Details" action="orderLineItems" rendered="#{speditionModel.availability}"/>
-                <h:commandButton value="Back" action="requestTransport"/>
-                <h:commandButton value="Cancel" action="home"/>
+                <b:commandButton value="Procceed to specify Order Details" action="orderLineItems" rendered="#{speditionModel.availability}"/>
+                <b:commandButton value="Back" action="requestTransport"/>
+                <b:commandButton value="Cancel" action="home"/>
                 </h:form>
              </f:view>
         </ui:define>

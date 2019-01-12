@@ -77,14 +77,6 @@ public class Order extends GeneratedIdEntity {
         }
     }
 
-    public void assignVehicle() {
-        //TODO use Total Lineitem weight to calc vehicle necesary
-        int sum = 0;
-
-        for( Object x: lineitems.toArray()) {
-            //TODO
-        }
-    }
 
     //Getter Setter
     public Long getId() {

@@ -77,7 +77,6 @@ public class BookingService implements Serializable {
         return this.orderLogic(type, user, password, source, destination, new ArrayList<Shipable>(items), amount, date).getId();
     }
 
-    //TODO STring wieder auf calendar ändern, nur zu testzwecken
     //WebService Interface
     @Transactional(REQUIRED) @Protokollieren
     public Long createHumanOrder(@WebParam(name="Username") String user, @WebParam(name="Password") String password, @WebParam(name="PickUpAddress") Address source, @WebParam(name="DeliveryAddress")Address destination, @WebParam(name="Persons")List<humanShipable> items, @WebParam(name = "Date") Date date) throws LoginException, InvalidParameterException {
@@ -101,6 +100,7 @@ public class BookingService implements Serializable {
     private Order orderLogic(OrderType type, String user, String password, Address source, Address destination, List<Shipable> items,  int amount, Date date) throws LoginException, InvalidParameterException {
         //Login
         try {
+            //Plain, maybe extend logic in future
             if(date == null) {
                 date = new Date();
             }

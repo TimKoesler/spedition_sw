@@ -2,9 +2,14 @@ package othr.sw.koesler.service;
 
 import othr.sw.koesler.entity.Customer;
 import othr.sw.koesler.entity.Order;
+import othr.sw.koesler.entity.Vehicle;
 import othr.sw.koesler.entity.repo.CustomerRepo;
 import othr.sw.koesler.entity.repo.OrderRepo;
+import othr.sw.koesler.entity.repo.VehicleRepo;
 import othr.sw.koesler.entity.util.OrderStatus;
+import othr.sw.koesler.entity.util.OrderType;
+import partner.zeitarbeit.PickUp;
+import partner.zeitarbeit.PickupService;
 
 import javax.ejb.*;
 import javax.inject.Inject;
@@ -32,6 +37,8 @@ public class TransportService {
     private OrderRepo orderRepo;
     @Inject
     private CustomerRepo customerRepo;
+    @Inject
+    private VehicleRepo vehicleRepo;
 
     @Schedule (
             hour="*",
@@ -45,12 +52,15 @@ public class TransportService {
             //irrelevant
             if(o.getOrderStatus() == OrderStatus.Cancelled || o.getOrderStatus() == OrderStatus.Done  || o.getOrderStatus() == OrderStatus.inProgess)
                 continue;
-            if(o.getDueDate().get(Calendar.YEAR) == today.get(Calendar.YEAR)) {
-                if(o.getDueDate().get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR))  {
+            if(o.getDueDate().get(Calendar.YEAR) == today.get(Calendar.YEAR) || o.getOrderStatus() == OrderStatus.Planned) {
+                if(o.getDueDate().get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) || o.getOrderStatus() == OrderStatus.Planned)  {
                     //If today
-                    o.setOrderStatus(OrderStatus.Planned);
-                    em.persist(o);
-                    if(o.getDueDate().get(Calendar.HOUR_OF_DAY) == today.get(Calendar.HOUR_OF_DAY)){
+                    if(o.getOrderStatus() != OrderStatus.Planned) {
+                        o.setOrderStatus(OrderStatus.Planned);
+                        em.persist(o);
+                    }
+
+                    if(o.getDueDate().get(Calendar.HOUR_OF_DAY) == today.get(Calendar.HOUR_OF_DAY) || o.getOrderStatus() == OrderStatus.Planned){
                         if(o.getOrderStatus() == OrderStatus.Planned) {
                             pickUp(o);
                         }
@@ -71,6 +81,7 @@ public class TransportService {
         //TODO on response deliver
        if(id == zeitarbeit) {
            //Zeitarbeit interface pickup
+
        } else if(id == mine) {
            //mine interface pickup
        } else if(id == kraftwerk) {
@@ -91,13 +102,36 @@ public class TransportService {
         }
     }
 
+    //TODO Logger für failed deliveries?
+
     @Transactional(REQUIRED)
     private void deliver(Order o) {
        // System.out.println("Reached Delivery Address..." + o.getDestination());
+        //Assign vehicles
+        //TODO use Total Lineitem weight to calc vehicle necesary
+        int amount = o.getLineitems().size();
+        if(o.getType() == OrderType.Human_Transport) {
+            for(Vehicle v : vehicleRepo.getAll()) {
+                //Look for available vehicles
+                if(v.getModel().contains("Person") && v.isAvailability()) {
+                    o.addVehicle(v);
+                    amount -= v.getCapacity();
+                    if(amount <= 0) {
+                        break;
+                    }
+                }
+            }
+            if(amount > 0) {
+                o.setOrderStatus(OrderStatus.Planned);
+                em.merge(o);
+                System.out.println("Not enough available vehicles, schedule later");
+                return;
+            }
+        } else {
+            for (Vehicle v : vehicleRepo.getAll()) {
 
-        //Merge to update Vehicle status -> cascade
-        o.assignVehicle();
-        em.merge(o);
+            }
+        }
 
         long id;
         Customer cust;

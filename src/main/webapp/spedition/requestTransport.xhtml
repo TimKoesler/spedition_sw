@@ -21,23 +21,15 @@
             <f:view>
                 <b:form>
                     <h:outputText styleClass="errorMsg" value="#{speditionModel.errorMsg}" rendered="#{speditionModel.error}"/>
-
-                    <h:panelGrid columns="2">
-                        <h:outputLabel styleClass="required" value="Transport Type:" />
-                        <h:selectOneMenu  value="#{speditionModel.orderType}" class="form-control">
-                            <f:selectItems value="#{transportTypeConverter.transportValues}"/>
-                        </h:selectOneMenu>
-
-                        <h:outputLabel styleClass="required" value="Weight of freight (kg):"/>
-                        <h:inputText value="#{speditionModel.amount}" class="form-control"/>
-
-                        <h:outputLabel styleClass="required" value="Date and Time"/>
-                        <b:dateTimePicker value="#{speditionModel.date}" allowInputToggle="true"/>
-
-                    </h:panelGrid>
-
+                    <h:panelGrid columns="1">
+                    <b:selectOneMenu  value="#{speditionModel.orderType}" label="Transport Type" span="15">
+                        <f:selectItems value="#{transportTypeConverter.transportValues}"/>
+                    </b:selectOneMenu>
+                    <b:inputText value="#{speditionModel.amount}" label="Amount or Weight" span="15"/>
+                    <b:dateTimePicker value="#{speditionModel.date}" allowInputToggle="true" label="Date and Time" span="15" locale="de"/>
 
                     <b:commandButton value="Check Availability" action="#{speditionModel.validateNewOrder()}"/>
+                    </h:panelGrid>
 
                 </b:form>
             </f:view>

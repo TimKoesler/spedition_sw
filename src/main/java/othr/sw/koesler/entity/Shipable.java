@@ -11,21 +11,13 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class LineItem extends GeneratedIdEntity {
+public class Shipable extends GeneratedIdEntity {
 
     @XmlTransient
     @ManyToOne(fetch = FetchType.EAGER)
     private Order order;
 
-    private int amount;
-    private String description;
-
-    public LineItem() {
-    }
-
-    public LineItem(int amount, String description) {
-        this.description = description;
-        this.amount = amount;
+    public Shipable() {
     }
 
     //Getter Setter
@@ -36,21 +28,5 @@ public class LineItem extends GeneratedIdEntity {
 
     public void setOrder(Order order) {
         this.order = order;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

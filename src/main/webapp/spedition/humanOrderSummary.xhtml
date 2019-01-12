@@ -31,8 +31,9 @@
                     </b:panelGrid>
                     <br/><br/><br/><br/><br/>
                     <b:dataTable var="lineItems" value="#{speditionModel.lineItems}">
-                        <b:dataTableColumn value="#{lineItems.amount}"/>
-                        <b:dataTableColumn value="#{lineItems.description}"/>
+                        <b:dataTableColumn value="#{lineItems.persNr}" label="ID"/>
+                        <b:dataTableColumn value="#{lineItems.firstname}"/>
+                        <b:dataTableColumn value="#{lineItems.lastname}"/>
                     </b:dataTable>
 
                     <b:commandButton value="Place Order" action="#{speditionModel.createOrder()}"/>

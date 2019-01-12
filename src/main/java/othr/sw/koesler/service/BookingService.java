@@ -7,6 +7,7 @@ import othr.sw.koesler.entity.util.OrderStatus;
 import othr.sw.koesler.entity.util.OrderType;
 import othr.sw.koesler.entity.util.Protokollieren;
 
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.jws.WebMethod;
@@ -19,9 +20,14 @@ import javax.security.auth.login.LoginException;
 import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import static javax.transaction.Transactional.TxType.REQUIRED;
 
 @WebService
 @SessionScoped
@@ -42,9 +48,9 @@ public class BookingService implements Serializable {
 
 
     //Frontend Method
-    @Transactional
+    @Transactional(REQUIRED)
     @WebMethod(exclude = true)
-    public Order createOrder(Customer customer, OrderType type, Address source, Address destination, List<LineItem> items, Calendar date) throws NullPointerException {
+    public Order createOrder(Customer customer, OrderType type, Address source, Address destination, List<Shipable> items, Calendar date) throws NullPointerException {
         //TODO
         if(customer == null || type == null || source == null || destination == null || items == null || date == null) {
             throw new NullPointerException("One of the Order Arguments is null");
@@ -52,29 +58,76 @@ public class BookingService implements Serializable {
         Order newOrder = new Order(customer, date);
         newOrder = checkAddress(newOrder, source, destination);
         newOrder.setType(type);
+        newOrder.setLineitems(items);
         orderRepo.persist(newOrder);
         return newOrder;
 
     }
 
     //WebService Interface
-    @Transactional @Protokollieren
-    public Order createOrder(@WebParam(name="Username") String user, @WebParam(name="Password") String password, @WebParam(name="OrderType") OrderType type, @WebParam(name="PickUpAddress") Address source, @WebParam(name="DeliveryAddress")Address destination, @WebParam(name="LineItems")List<LineItem> items, @WebParam(name="AmountKG") int amount, @WebParam(name = "Date") Calendar date) throws LoginException, InvalidParameterException {
+    @Transactional(REQUIRED) @Protokollieren
+    public Long createItemOrder(@WebParam(name="Username") String user, @WebParam(name="Password") String password, @WebParam(name="PickUpAddress") Address source, @WebParam(name="DeliveryAddress")Address destination, @WebParam(name="Items")List<itemShipable> items, @WebParam(name = "Date") Date date) throws LoginException, InvalidParameterException {
+        OrderType type = OrderType.Item_Transport;
+
+        int amount = 0;
+        for(itemShipable i : items) {
+            amount *= i.getAmount();
+        }
+
+        return this.orderLogic(type, user, password, source, destination, new ArrayList<Shipable>(items), amount, date).getId();
+    }
+
+    //TODO STring wieder auf calendar ändern, nur zu testzwecken
+    //WebService Interface
+    @Transactional(REQUIRED) @Protokollieren
+    public Long createHumanOrder(@WebParam(name="Username") String user, @WebParam(name="Password") String password, @WebParam(name="PickUpAddress") Address source, @WebParam(name="DeliveryAddress")Address destination, @WebParam(name="Persons")List<humanShipable> items, @WebParam(name = "Date") Date date) throws LoginException, InvalidParameterException {
+//        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");     for testing
+//        Calendar date2 = Calendar.getInstance();
+//        try {
+//            date2.setTime(format.parse(date));
+//        } catch (ParseException e) {
+//            System.out.println("Date error");
+//        }
+        OrderType type = OrderType.Human_Transport;
+
+        int amount = items.size();
+
+        return this.orderLogic(type, user, password, source, destination, new ArrayList<Shipable>(items), amount, date).getId();
+
+    }
+
+    @Transactional(REQUIRED)
+    @WebMethod(exclude = true)
+    private Order orderLogic(OrderType type, String user, String password, Address source, Address destination, List<Shipable> items,  int amount, Date date) throws LoginException, InvalidParameterException {
         //Login
         try {
+            if(date == null) {
+                date = new Date();
+            }
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+
             Customer c = userService.login(user, password);
+            //brauch ich?
+            c = entityManager.merge(c);
             if(source == null) {
                 source = c.getAddress();
             }
-            //Check Order
-            if(checkAvailability(type, amount, date)) {
-                Order newOrder = new Order(c, date);
-                //Convert to Enum - nur wenn ichs manuell aufrufe brauch ich das oder?
-                for(OrderType ot : OrderType.values()) {
-                    if(ot.getLabel().equals(type)) {
-                        type = ot;
-                    }
+
+            if(destination == null) {
+                //Special for mine
+                if(c.getId() == TransportService.mine) {
+                    Customer tempCustomer = entityManager.find(Customer.class, TransportService.kraftwerk);
+                    destination = tempCustomer.getAddress();
+                } else {
+                    throw new InvalidParameterException("Destination adress is null");
                 }
+            }
+
+
+            //Check Order
+            if(checkAvailability(type, amount, calendar)) {
+                Order newOrder = new Order(c, calendar);
                 newOrder.setType(type);
                 newOrder.setLineitems(items);
                 newOrder = checkAddress(newOrder, source, destination);
@@ -90,7 +143,7 @@ public class BookingService implements Serializable {
         }
     }
 
-    @Transactional
+    @Transactional(REQUIRED)
     @WebMethod(exclude = true)
     public boolean cancelOrder(int id) throws NullPointerException{
         Order order = orderRepo.getById(Integer.toUnsignedLong(id));
@@ -103,6 +156,7 @@ public class BookingService implements Serializable {
         }
     }
     @WebMethod(exclude = true)
+    @Transactional(REQUIRED)
     public boolean checkAvailability(OrderType type, int amount, Calendar date) {
         //TODO More complex implementation?
         System.out.println("CHECKING AVAILABILITY: " + type + " Amount " + amount);
@@ -114,7 +168,11 @@ public class BookingService implements Serializable {
         return false;
     }
 
+    @Transactional(REQUIRED)
     private Order checkAddress(Order newOrder, Address source, Address destination) {
+        //Make sure they have IDs
+        source = new Address(source.getStreet(), source.getCity(), source.getCountry(), source.getPLZ());
+        destination = new Address(destination.getStreet(), destination.getCity(), destination.getCountry(), destination.getPLZ());
         Address s =  entityManager.find(Address.class, source.getId());
         Address d =  entityManager.find(Address.class, destination.getId());
 
@@ -132,7 +190,7 @@ public class BookingService implements Serializable {
         return newOrder;
     }
 
-    //TODO custId nicht assigned
+    @Transactional(REQUIRED)
     @WebMethod(exclude = true)
     public List<Order> getAllOrders(Customer c) throws NullPointerException{
         if(c == null) {

@@ -4,6 +4,8 @@ import othr.sw.koesler.entity.util.GeneratedIdEntity;
 import othr.sw.koesler.entity.util.*;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -11,13 +13,14 @@ import java.util.List;
 
 @Entity
 @Table(name = "Sped_Order")
+@XmlAccessorType(value = XmlAccessType.FIELD)
 public class Order extends GeneratedIdEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
-    private Collection<LineItem> lineitems = new ArrayList<>();
+    private Collection<Shipable> lineitems = new ArrayList<>();
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Collection<Vehicle> vehicles = new ArrayList<>();
 
 
@@ -30,7 +33,6 @@ public class Order extends GeneratedIdEntity {
     private Calendar dueDate;
     private OrderType type;
     private OrderStatus orderStatus;
-    private Long id;
 
     public Order() {
 
@@ -38,7 +40,6 @@ public class Order extends GeneratedIdEntity {
 
     public Order(Customer customer, Calendar dueDate) {
 
-        this.id = this.getId();
         this.customer = customer;
         this.dueDate = dueDate;
         this.orderStatus = OrderStatus.New;
@@ -48,11 +49,11 @@ public class Order extends GeneratedIdEntity {
     }
 
 
-    public void addLineItem(LineItem item) {
+    public void addLineItem(Shipable item) {
         this.lineitems.add(item);
     }
 
-    public void addLineItems(List<LineItem> items) {
+    public void addLineItems(List<Shipable> items) {
         this.lineitems.addAll(items);
     }
 
@@ -76,7 +77,7 @@ public class Order extends GeneratedIdEntity {
         }
     }
 
-    private void assignVehicle() {
+    public void assignVehicle() {
         //TODO use Total Lineitem weight to calc vehicle necesary
         int sum = 0;
 
@@ -86,7 +87,9 @@ public class Order extends GeneratedIdEntity {
     }
 
     //Getter Setter
-
+    public Long getId() {
+        return super.getId();
+    }
 
     public Calendar getDueDate() {
         return dueDate;
@@ -96,11 +99,11 @@ public class Order extends GeneratedIdEntity {
         this.dueDate = dueDate;
     }
 
-    public Collection<LineItem> getLineitems() {
+    public Collection<Shipable> getLineitems() {
         return lineitems;
     }
 
-    public void setLineitems(Collection<LineItem> lineitems) {
+    public void setLineitems(Collection<Shipable> lineitems) {
         this.lineitems = lineitems;
     }
 

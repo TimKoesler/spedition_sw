@@ -18,27 +18,29 @@
             <f:view>
                 <h:outputText styleClass="errorMsg" value="#{speditionModel.errorMsg}" rendered="#{speditionModel.error}"/>
                 <b:form>
+
                     <b:panelGrid columns="1">
-                    <b:formGroup>
-                        <b:inputText binding="#{amount}" class="form-control" span="3" label="Amount"/>
-                        <b:inputText binding="#{lineItem}" class="form-control" span="3" label="Descritption"/>
-                    </b:formGroup><br/>
-                    <b:commandButton value="Add" action="#{speditionModel.addItemShipable(amount.value, lineItem.value)}" />
+                    <b:inputText binding="#{persNr}" span="3" label="ID"/>
+                         <b:formGroup>
+                            <b:inputText binding="#{firstname}" span="3" label="Firstname"/>
+                            <b:inputText binding="#{lastname}" span="3" label="Lastname"/>
+                        </b:formGroup><br/>
+                        <b:commandButton value="Add" action="#{speditionModel.addHumanShipable(firstname.value, lastname.value, persNr.value)}" />
                     </b:panelGrid>
 
 
-                        <b:commandButton value="Procceed to Address Information" action="#{speditionModel.validateLineitems()}"/>
-                        <b:commandButton value="Back" action="requestTransport"/>
-                        <b:commandButton value="Cancel" action="home"/>
-
+                    <b:commandButton value="Procceed to Address Information" action="#{speditionModel.validateLineitems()}"/>
+                    <b:commandButton value="Back" action="requestTransport"/>
+                    <b:commandButton value="Cancel" action="home"/>
                     <br/>
                     <br/>
                     <br/>
                     <br/>
                     <br/>
                     <b:dataTable var="lineItems" value="#{speditionModel.lineItems}">
-                        <b:dataTableColumn value="#{lineItems.amount}"/>
-                        <b:dataTableColumn value="#{lineItems.description}"/>
+                        <b:dataTableColumn value="#{lineItems.persNr}" label="ID"/>
+                        <b:dataTableColumn value="#{lineItems.firstname}"/>
+                        <b:dataTableColumn value="#{lineItems.lastname}"/>
                         <b:dataTableColumn label="Actions">
                             <b:commandButton value="remove" action="#{speditionModel.removeLineItem(lineItems)}"/>
                         </b:dataTableColumn>

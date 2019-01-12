@@ -19,18 +19,20 @@
             <h1>Login</h1>
             <h:form>
             <h:outputText styleClass="errorMsg" value="#{speditionModel.errorMsg}" rendered="#{speditionModel.error}"/>
-            <h:panelGrid columns="2">
-
-                <h:outputLabel value="Username:" />
-                <h:inputText value="#{speditionModel.user}"/>
-
-                <h:outputLabel value="Password:"/>
-                <h:inputSecret value="#{speditionModel.password}"/>
-
-            </h:panelGrid>
-            <b:commandButton value="Login" action="#{speditionModel.login()}"/>
+                <h:panelGrid columns="1">
+                <b:inputText value="#{speditionModel.user}" label="Username" span="10">
+                    <f:facet name="prepend">
+                        <b:icon name="user" />
+                    </f:facet>
+                </b:inputText>
+                <b:inputSecret value="#{speditionModel.password}" label="Password" span="10">
+                    <f:facet name="prepend">
+                        <b:iconAwesome name="key" />
+                    </f:facet>
+                </b:inputSecret>
+                <b:commandButton value="Login" action="#{speditionModel.login()}"/>
+                </h:panelGrid>
             </h:form>
-
          </f:view>
     </ui:define>
 </ui:composition>

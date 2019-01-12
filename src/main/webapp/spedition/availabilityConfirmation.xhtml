@@ -23,21 +23,18 @@
                     <h:outputLabel value="Requested Order Type:"/>
                     <h:outputLabel value="#{speditionModel.orderType}"/>
 
-                    <h:outputLabel value="Total freight weight (kg):"/>
+                    <h:outputLabel value="Total amount:"/>
                     <h:outputLabel value="#{speditionModel.amount}"/>
 
                     <h:outputLabel value="Date"/>
                     <h:outputLabel value="#{speditionModel.date}"/>
-
-                    <h:outputLabel value="Time"/>
-                    <h:outputLabel value="#{speditionModel.time}"/>
 
                     <h:outputLabel value="Available:"/>
                     <h:outputLabel value="#{speditionModel.isAvailable()}"/>
 
                 </h:panelGrid>
 
-                <b:commandButton value="Procceed to specify Order Details" action="orderLineItems" rendered="#{speditionModel.availability}"/>
+                <b:commandButton value="Procceed to specify Order Details" action="#{speditionModel.orderTypeRouting()}" rendered="#{speditionModel.availability}"/>
                 <b:commandButton value="Back" action="requestTransport"/>
                 <b:commandButton value="Cancel" action="home"/>
                 </h:form>

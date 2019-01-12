@@ -1,9 +1,6 @@
 package othr.sw.koesler.ui.model;
 
-import othr.sw.koesler.entity.Address;
-import othr.sw.koesler.entity.Customer;
-import othr.sw.koesler.entity.LineItem;
-import othr.sw.koesler.entity.Order;
+import othr.sw.koesler.entity.*;
 import othr.sw.koesler.entity.util.OrderStatus;
 import othr.sw.koesler.service.BookingService;
 import othr.sw.koesler.entity.util.OrderType;
@@ -29,13 +26,13 @@ public class SpeditionModel implements Serializable {
     private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH.mm");
 
     private Order tempOrder;
-    private OrderType orderType = OrderType.Item_Transport;
-    private List<LineItem> lineItems = new ArrayList<>();
+    private OrderType orderType;
+    private List<Shipable> lineItems = new ArrayList<>();
     private int amount = 0;
     private boolean availability = false;
-    private String date;
-//    private Date date;
-    private String time;
+//    private String date;
+    private Date date;
+//    private String time;
     private Calendar tempTime = Calendar.getInstance();
     private Address destination;
     //ERRORS
@@ -61,20 +58,23 @@ public class SpeditionModel implements Serializable {
 
     //Action methoden
     public String validateNewOrder() {
-        if(this.amount == 0 || this.date.equals(null) || this.time.equals(null)) {
+        if(this.amount == 0 || this.date.equals(null)) {
             this.error = true;
             this.errorMsg = "Please fill out all the fields!";
             return null;
         } else {
-            try {
-                this.tempTime.setTime(dateTimeFormat.parse(dateFormat.parse(this.date) + " " + timeFormat.parse(this.time)));
-                this.availability = this.bookingService.checkAvailability(this.orderType, this.amount, this.tempTime);
-                this.error = false;
-                return "availabilitySummary";
-            } catch (ParseException p) {
-                 System.out.println("Error caused by: " + p.getCause());
-                 return null;
-            }
+            this.tempTime.setTime(this.date);
+            this.availability = this.bookingService.checkAvailability(this.orderType, this.amount, this.tempTime);
+            this.error = false;
+            return "availabilitySummary";
+        }
+    }
+
+    public String orderTypeRouting() {
+        if(this.orderType == orderType.Item_Transport) {
+            return "orderLineItems";
+        } else {
+            return "orderHumans";
         }
     }
 
@@ -89,11 +89,14 @@ public class SpeditionModel implements Serializable {
             }
     }
 
-    public void addLineItem(int amount, String description) {
-        this.lineItems.add(new LineItem(amount, description));
+    public void addItemShipable (int amount, String description) {
+        this.lineItems.add(new itemShipable(amount, description));
+    }
+    public void addHumanShipable (String firstname, String lastname, int persNr) {
+        this.lineItems.add(new humanShipable(firstname, lastname, Integer.toUnsignedLong(persNr)));
     }
 
-    public void removeLineItem(LineItem item) {
+    public void removeLineItem(Shipable item) {
         this.lineItems.remove(item);
     }
 
@@ -106,7 +109,10 @@ public class SpeditionModel implements Serializable {
         } else {
             this.error = false;
             this.destination = new Address(streetDest, cityDest, countryDest, PLZDest);
-            return "orderSummary";
+            if(this.orderType == OrderType.Item_Transport)
+                return "orderSummary";
+            else
+                return "humanOrderSummary";
         }
     }
 
@@ -139,7 +145,6 @@ public class SpeditionModel implements Serializable {
         if(this.conversation.isTransient()) {
             this.conversation.begin();
         }
-        System.out.println("Tried to login!");
         try {
             Customer customer = userService.login(this.user, this.password);
             this.tempCustomer = customer;
@@ -257,28 +262,20 @@ public class SpeditionModel implements Serializable {
     //Getter and Setter
 
 
-    public List<LineItem> getLineItems() {
+    public List<Shipable> getLineItems() {
         return lineItems;
     }
 
-    public void setLineItems(List<LineItem> lineItems) {
+    public void setLineItems(List<Shipable> lineItems) {
         this.lineItems = lineItems;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public boolean isError() {

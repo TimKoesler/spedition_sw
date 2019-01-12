@@ -22,6 +22,7 @@ public class Customer extends GeneratedIdEntity {
     @OneToOne(cascade = CascadeType.PERSIST)
     private Address address;
 
+    //TODO Brauch ich hier überhaupt ne beidseitige beziehung???
     @OneToMany(mappedBy = "customer")
     private Collection<Order> orders = new ArrayList<>();
 

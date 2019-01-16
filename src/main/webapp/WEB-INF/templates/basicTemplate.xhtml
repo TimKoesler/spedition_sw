@@ -29,25 +29,33 @@
 
     <div id="top">
         <ui:insert name="top">
+            <div style="float: right">
+                <h:form>
+                    <h:commandLink value="Log-Out" action="#{speditionModel.logout()}" rendered="#{speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{speditionModel.loggedIn}"/>
+                    <h:commandLink value="Login" action="login" rendered="#{!speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{!speditionModel.loggedIn}"/>
+                    <h:commandLink value="Register" action="register" rendered="#{!speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{!speditionModel.loggedIn}"/>
+                </h:form>
+            </div>
             <h2 id="headline">Spedition Koesler</h2><br/>
-            <h:form>
-                <h:commandLink value="Home" action="home"/>&nbsp;&nbsp;&nbsp;&nbsp;
-                <h:commandLink value="Request Transport" action="#{speditionModel.validateRequestTransport()}"/>&nbsp;&nbsp;&nbsp;&nbsp;
-                <h:commandLink value="My Orders" action="myOrders" rendered="#{speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{speditionModel.loggedIn}"/>
-                <h:commandLink value="My User" action="myUser" rendered="#{speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{speditionModel.loggedIn}"/>
-                <h:commandLink value="Log-Out" action="#{speditionModel.logout()}" rendered="#{speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{speditionModel.loggedIn}"/>
-                <h:commandLink value="Login" action="login" rendered="#{!speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{!speditionModel.loggedIn}"/>
-                <h:commandLink value="Register" action="register" rendered="#{!speditionModel.loggedIn}"/><h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{!speditionModel.loggedIn}"/>
-            </h:form>
-
+            <div style="float: right">
+                <h:outputText value="Logged in as:&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{speditionModel.loggedIn}"/>
+                <h:outputLabel value="#{speditionModel.lastname}, " rendered="#{speditionModel.loggedIn}"/>
+                <h:outputLabel value="#{speditionModel.firstname}&nbsp;&nbsp;&nbsp;&nbsp;" rendered="#{speditionModel.loggedIn}"/>
+            </div>
         </ui:insert>
     </div>
+
     <div>
         <div id="left">
             <ui:insert name="left">
-                <h:outputText value="Logged in as:" rendered="#{speditionModel.loggedIn}"/><br/><br/>
-                <h:outputText value="#{speditionModel.lastname}" rendered="#{speditionModel.loggedIn}"/><br/>
-                <h:outputText value="#{speditionModel.firstname}" rendered="#{speditionModel.loggedIn}"/>
+                <h:form>
+                    <h:panelGrid columns="1">
+                        <h:commandLink value="Home" action="home"/>
+                        <h:commandLink value="Request Transport" action="#{speditionModel.validateRequestTransport()}"/>
+                        <h:commandLink value="My Orders" action="myOrders" rendered="#{speditionModel.loggedIn}"/>
+                        <h:commandLink value="My User" action="myUser" rendered="#{speditionModel.loggedIn}"/>
+                    </h:panelGrid>
+                </h:form>
             </ui:insert>
         </div>
         <div id="content" class="left_content">

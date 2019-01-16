@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui">
 
 <h:head>
 
@@ -12,10 +13,12 @@
 <h:body>
     <ui:composition template="WEB-INF/templates/basicTemplate.xhtml">
         <ui:define name="content">
-            <h1>Welcome to this website!</h1>
-            <h2>Hopefully its cool one day!</h2>
-            Use the navigation elements to do stuff.
-            Note that before using the webservice soap interface you have to create an account.
+            <b:jumbotron style="background-color: #dddddd">
+                <h1>Welcome to this website!</h1>
+                <h2>Hopefully its cool one day!</h2>
+                <p>Use the navigation elements to do stuff.</p>
+                <p>Note that before using the webservice soap interface you have to create an account.</p>
+            </b:jumbotron>
         </ui:define>
     </ui:composition>
 </h:body>

@@ -17,34 +17,19 @@
 
             <h1>User Details</h1>
             <f:view>
-                <h:form>
-                <h:panelGrid columns="2">
-
-                    <h:outputLabel value="Username:" />
-                    <h:inputText value="#{speditionModel.user}"/>
-
-                    <h:outputLabel value="Firstname:"/>
-                    <h:inputText value="#{speditionModel.firstname}"/>
-
-                    <h:outputLabel value="Lastname:"/>
-                    <h:inputText value="#{speditionModel.lastname}"/>
-
-                    <h:outputLabel value="Country:"/>
-                    <h:inputText value="#{speditionModel.country}"/>
-
-                    <h:outputLabel value="PLZ:"/>
-                    <h:inputText value="#{speditionModel.PLZ}"/>
-
-                    <h:outputLabel value="City:"/>
-                    <h:inputText value="#{speditionModel.city}"/>
-
-                    <h:outputLabel value="Street:"/>
-                    <h:inputText value="#{speditionModel.street}"/>
-
-                </h:panelGrid>
-                <b:commandButton value="Update Details" action="#{speditionModel.userUpdate()}"/><br/>
-                <b:commandButton value="Delete User" action="#{speditionModel.deleteUser()}"/>
-                </h:form>
+                <b:form>
+                    <b:panelGrid columns="1">
+                        <b:inputText value="#{speditionModel.user}" label="Username:" span="2"/>
+                        <b:inputText value="#{speditionModel.firstname}" label="Firstname:" span="2"/>
+                        <b:inputText value="#{speditionModel.lastname}" label="Lastname:" span="2"/>
+                        <b:inputText value="#{speditionModel.country}" label="Country:" span="2"/>
+                        <b:inputText value="#{speditionModel.PLZ}" label="Postcode:" span="2"/>
+                        <b:inputText value="#{speditionModel.city}" label="City:" span="2"/>
+                        <b:inputText value="#{speditionModel.street}" label="Street:" span="2"/>
+                    </b:panelGrid>
+                    <b:commandButton value="Update Details" action="#{speditionModel.userUpdate()}"/>
+                    <b:commandButton value="Delete User" action="#{speditionModel.deleteUser()}"/>
+                </b:form>
             </f:view>
         </ui:define>
     </ui:composition>

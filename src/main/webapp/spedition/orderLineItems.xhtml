@@ -16,20 +16,26 @@
     <ui:composition template="../WEB-INF/templates/basicTemplate.xhtml">
         <ui:define name="content">
             <f:view>
+                <h2>Add Line Items</h2>
                 <h:outputText styleClass="errorMsg" value="#{speditionModel.errorMsg}" rendered="#{speditionModel.error}"/>
                 <b:form>
-                    <b:panelGrid columns="1">
-                    <b:formGroup>
-                        <b:inputText binding="#{amount}" class="form-control" span="3" label="Amount"/>
-                        <b:inputText binding="#{lineItem}" class="form-control" span="3" label="Descritption"/>
-                    </b:formGroup><br/>
-                    <b:commandButton value="Add" action="#{speditionModel.addItemShipable(amount.value, lineItem.value)}" />
-                    </b:panelGrid>
+                        <b:panelGrid colSpans="1,5,1,5" style="overflow:hidden, width:900px">
+                            <b:inputText binding="#{amount}" label="Amount"/>
+                            <b:inputText binding="#{lineItem}" label="Descritption"/>
+                            <b:commandButton value="Add" action="#{speditionModel.addItemShipable(amount.value, lineItem.value)}"/>
+                            <b:panelGrid columns="3" style="float:right">
+                                <b:commandButton value="Back" action="requestTransport" style="width:80px" look="primary">
+                                    <b:iconAwesome name="arrow-left"></b:iconAwesome>
+                                </b:commandButton>
+                                <b:commandButton value="Next" action="#{speditionModel.validateLineitems()}" style="width:80px" look="primary">
+                                    <b:iconAwesome name="arrow-right"></b:iconAwesome>
+                                </b:commandButton>
+                                <b:commandButton value="Cancel" action="home" style="width:80px" look="danger">
+                                    <b:iconAwesome name="times"></b:iconAwesome>
+                                </b:commandButton>
+                            </b:panelGrid>
+                        </b:panelGrid>
 
-
-                        <b:commandButton value="Procceed to Address Information" action="#{speditionModel.validateLineitems()}"/>
-                        <b:commandButton value="Back" action="requestTransport"/>
-                        <b:commandButton value="Cancel" action="home"/>
 
                     <br/>
                     <br/>

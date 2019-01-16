@@ -20,40 +20,37 @@
             <h2>Adress Information</h2>
             <h:outputText styleClass="errorMsg" value="#{speditionModel.errorMsg}" rendered="#{speditionModel.error}"/>
             <h:form>
-            <h3>Pick-Up Adress</h3>
-                <h:panelGrid columns="2">
-                    <h:outputLabel styleClass="required" value="Street:"/>
-                    <h:inputText value="#{speditionModel.street}" class="form-control"/>
-
-                    <h:outputLabel styleClass="required" value="City:"/>
-                    <h:inputText value="#{speditionModel.city}" class="form-control"/>
-
-                    <h:outputLabel styleClass="required" value="PLZ:"/>
-                    <h:inputText value="#{speditionModel.PLZ}" class="form-control"/>
-
-                    <h:outputLabel styleClass="required" value="Country:"/>
-                    <h:inputText value="#{speditionModel.country}" class="form-control"/>
-
-                </h:panelGrid>
-
-                <h3>Delivery Adress</h3>
-                <h:panelGrid columns="2">
-                    <h:outputLabel styleClass="required" value="Street:"/>
-                    <h:inputText binding="#{streetDest}" class="form-control"/>
-
-                    <h:outputLabel styleClass="required" value="City:"/>
-                    <h:inputText binding="#{cityDest}" class="form-control"/>
-
-                    <h:outputLabel styleClass="required" value="PLZ:"/>
-                    <h:inputText binding="#{plzDest}" class="form-control"/>
-
-                    <h:outputLabel styleClass="required" value="Country:"/>
-                    <h:inputText binding="#{countryDest}" class="form-control"/>
-
-                </h:panelGrid>
-                <b:commandButton value="Summary" action="#{speditionModel.saveDestination(streetDest.value, cityDest.value, countryDest.value, plzDest.value)}"/>
-                <b:commandButton value="Back" action="orderLineItems"/>
-                <b:commandButton value="Cancel" action="home"/>
+                <b:panelGrid colSpans="8,4">
+                    <b:panelGrid columns="1">
+                        <b:panel id="pickUp" title="Pick-Up Adress" style="font-weight: bold">
+                            <h:panelGrid columns="1">
+                                <b:inputText value="#{speditionModel.street}" label="Street:"/>
+                                <b:inputText value="#{speditionModel.city}" label="City:"/>
+                                <b:inputText value="#{speditionModel.PLZ}" label="Postcode:"/>
+                                <b:inputText value="#{speditionModel.country}" label="Country:"/>
+                            </h:panelGrid>
+                        </b:panel>
+                        <b:panel id="delivery" title="Delivery Adress" style="font-weight: bold">
+                            <h:panelGrid columns="1">
+                                <b:inputText binding="#{streetDest}" label="Street:"/>
+                                <b:inputText binding="#{cityDest}" label="City:"/>
+                                <b:inputText binding="#{plzDest}" label="Postcode:"/>
+                                <b:inputText binding="#{countryDest}" label="Country:"/>
+                            </h:panelGrid>
+                        </b:panel>
+                    </b:panelGrid>
+                    <b:panelGrid columns="3" style="float:right">
+                        <b:commandButton value="Back" action="orderLineItems" style="width:80px" look="primary">
+                            <b:iconAwesome name="arrow-left"></b:iconAwesome>
+                        </b:commandButton>
+                        <b:commandButton value="Summary" action="#{speditionModel.saveDestination(streetDest.value, cityDest.value, countryDest.value, plzDest.value)}" style="width:100px" look="primary">
+                            <b:iconAwesome name="arrow-right"></b:iconAwesome>
+                        </b:commandButton>
+                        <b:commandButton value="Cancel" action="home" style="width:80px" look="danger">
+                            <b:iconAwesome name="times"></b:iconAwesome>
+                        </b:commandButton>
+                    </b:panelGrid>
+                </b:panelGrid>
             </h:form>
              </f:view>
         </ui:define>

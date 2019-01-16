@@ -7,7 +7,6 @@ import othr.sw.koesler.entity.util.OrderStatus;
 import othr.sw.koesler.entity.util.OrderType;
 import othr.sw.koesler.entity.util.Protokollieren;
 
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.jws.WebMethod;
@@ -20,7 +19,6 @@ import javax.security.auth.login.LoginException;
 import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -159,7 +157,7 @@ public class BookingService implements Serializable {
     @Transactional(REQUIRED)
     public boolean checkAvailability(OrderType type, int amount, Calendar date) {
         //TODO More complex implementation?
-        System.out.println("CHECKING AVAILABILITY: " + type + " Amount " + amount);
+        //System.out.println("CHECKING AVAILABILITY: " + type + " Amount " + amount);
         for(Vehicle v : vehicleRepo.getAll()) {
             if(v.isAvailability() && v.getCapacity() > amount) {
                 return true;

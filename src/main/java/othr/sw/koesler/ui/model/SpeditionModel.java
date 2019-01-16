@@ -8,6 +8,7 @@ import othr.sw.koesler.service.UserService;
 
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.security.auth.login.LoginException;
@@ -18,21 +19,15 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Named
-@ConversationScoped
+@SessionScoped
 public class SpeditionModel implements Serializable {
 
-    private final static SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH.mm");
 
-    private Order tempOrder;
     private OrderType orderType;
     private List<Shipable> lineItems = new ArrayList<>();
     private int amount = 0;
     private boolean availability = false;
-//    private String date;
     private Date date;
-//    private String time;
     private Calendar tempTime = Calendar.getInstance();
     private Address destination;
     //ERRORS
@@ -163,6 +158,7 @@ public class SpeditionModel implements Serializable {
 
     public String logout() {
         this.loggedIn  = false;
+        resetVars();
         if(!this.conversation.isTransient()) {
             this.conversation.end();
         }

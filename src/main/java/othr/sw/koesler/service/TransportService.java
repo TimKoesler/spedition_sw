@@ -8,8 +8,10 @@ import othr.sw.koesler.entity.repo.OrderRepo;
 import othr.sw.koesler.entity.repo.VehicleRepo;
 import othr.sw.koesler.entity.util.OrderStatus;
 import othr.sw.koesler.entity.util.OrderType;
-import partner.zeitarbeit.PickUp;
+import partner.mine.MinesService;
+import partner.mine.ResourceUnit;
 import partner.zeitarbeit.PickupService;
+import partner.zeitarbeit.Worker;
 
 import javax.ejb.*;
 import javax.inject.Inject;
@@ -18,6 +20,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static javax.transaction.Transactional.TxType.REQUIRED;
@@ -26,9 +29,12 @@ import static javax.transaction.Transactional.TxType.REQUIRED;
 @Startup
 public class TransportService {
 
-    public static final long zeitarbeit = 1;
+
     public static final long mine = 52;
-    public static final long kraftwerk = 3;
+    public static final long zeitarbeit = 26;
+    //To be defined
+    public static final long kraftwerk = 66;
+
 
     @PersistenceContext(unitName = "speditionPU")
     EntityManager em;
@@ -39,6 +45,13 @@ public class TransportService {
     private CustomerRepo customerRepo;
     @Inject
     private VehicleRepo vehicleRepo;
+
+    //Partner
+    @Inject
+    private MinesService minesService;
+    @Inject
+    private PickupService pickupService;
+
 
     @Schedule (
             hour="*",
@@ -72,27 +85,27 @@ public class TransportService {
 
     @Transactional(REQUIRED)
     private void pickUp(Order o) {
-      //  System.out.println("Going to pickup LineItems at..." + o.getSource());
+//        System.out.println("Going to pickup LineItems at..." + o.getSource());
         o.setOrderStatus(OrderStatus.inProgess);
         em.merge(o);
 
         long id = o.getCustomer().getId();
 
-        //TODO on response deliver
        if(id == zeitarbeit) {
-           //Zeitarbeit interface pickup
-
+           //TODO Zeitarbeit interface pickup
+           List<partner.zeitarbeit.Worker> zeitarbeitWorker = pickupService.pickUp(new partner.zeitarbeit.Order());
        } else if(id == mine) {
-           //mine interface pickup
+           //TODO mine interface pickup
+           List<ResourceUnit> resourceUnits = minesService.fetchResources(o.getId());
        } else if(id == kraftwerk) {
-           //kraftwerk interface pickup - gibts gar nicht?
+           //TODO kraftwerk interface pickup - gibts gar nicht?
        } else {
            //DEFAULT CASE
        }
 
         try {
             //Wait till its there
-            TimeUnit.MINUTES.sleep(Double.doubleToLongBits(o.calcDuration()));
+            TimeUnit.MILLISECONDS.sleep(Double.doubleToLongBits(o.calcDuration()));
             this.deliver(o);
         } catch(InterruptedException e) {
             //Set it back to planned for redelivery
@@ -128,6 +141,7 @@ public class TransportService {
                 return;
             }
         } else {
+            //item order
             for (Vehicle v : vehicleRepo.getAll()) {
 
             }
@@ -160,6 +174,7 @@ public class TransportService {
             //Zeitarbeit interface deliver
         } else if(id == mine) {
             //mine interface deliver
+//            minesService.deliverWorkers();
         } else if(id == kraftwerk) {
             //kraftwerk interface deliver
         } else {

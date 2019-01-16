@@ -18,16 +18,28 @@
             <h2>Order Summary</h2>
             <f:view>
                 <h:form>
-                    <b:panelGrid columns="2">
-                        <h:outputLabel value="Requested Order Type:"/>
-                        <h:outputLabel value="#{speditionModel.orderType}"/>
+                    <b:panelGrid colSpans="6,6">
+                        <b:panelGrid columns="2">
+                            <h:outputLabel value="Requested Order Type:"/>
+                            <h:outputText value="#{speditionModel.orderType}"/>
 
-                        <h:outputLabel value="Amount or Weight:"/>
-                        <h:outputLabel value="#{speditionModel.amount}"/>
+                            <h:outputLabel value="Amount or Weight:"/>
+                            <h:outputText value="#{speditionModel.amount}"/>
 
-                        <h:outputLabel value="Date"/>
-                        <h:outputLabel value="#{speditionModel.date}"/>
-
+                            <h:outputLabel value="Date"/>
+                            <h:outputText value="#{speditionModel.date}"/>
+                        </b:panelGrid>
+                        <b:panelGrid columns="3" style="float:right">
+                            <b:commandButton value="Back" action="addressInformations" style="width:80px" look="primary">
+                                <b:iconAwesome name="arrow-left"></b:iconAwesome>
+                            </b:commandButton>
+                            <b:commandButton value="Place Order" action="#{speditionModel.createOrder()}" style="width:120px" look="primary">
+                                <b:iconAwesome name="arrow-right"></b:iconAwesome>
+                            </b:commandButton>
+                            <b:commandButton value="Cancel" action="home" style="width:80px" look="danger">
+                                <b:iconAwesome name="times"></b:iconAwesome>
+                            </b:commandButton>
+                        </b:panelGrid>
                     </b:panelGrid>
                     <br/><br/><br/><br/><br/>
                     <b:dataTable var="lineItems" value="#{speditionModel.lineItems}">
@@ -35,7 +47,6 @@
                         <b:dataTableColumn value="#{lineItems.description}"/>
                     </b:dataTable>
 
-                    <b:commandButton value="Place Order" action="#{speditionModel.createOrder()}"/>
                 </h:form>
             </f:view>
         </ui:define>

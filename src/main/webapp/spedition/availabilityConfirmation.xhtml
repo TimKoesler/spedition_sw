@@ -19,24 +19,34 @@
             <h2>Availability Confirmation</h2>
             <f:view>
                 <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="Requested Order Type:"/>
-                    <h:outputLabel value="#{speditionModel.orderType}"/>
+                <b:panelGrid columns="2" colSpans="5,7">
+                    <b:panelGrid columns="2">
+                        <h:outputLabel value="Requested Order Type:"/>
+                        <h:outputText value="#{speditionModel.orderType}"/>
 
-                    <h:outputLabel value="Total amount:"/>
-                    <h:outputLabel value="#{speditionModel.amount}"/>
+                        <h:outputLabel value="Total amount:"/>
+                        <h:outputText value="#{speditionModel.amount}"/>
 
-                    <h:outputLabel value="Date"/>
-                    <h:outputLabel value="#{speditionModel.date}"/>
+                        <h:outputLabel value="Date:"/>
+                        <h:outputText value="#{speditionModel.date}"/>
 
-                    <h:outputLabel value="Available:"/>
-                    <h:outputLabel value="#{speditionModel.isAvailable()}"/>
+                        <h:outputLabel value="Available:"/>
+                        <h:outputText value="#{speditionModel.isAvailable()}"/>
+                    </b:panelGrid>
 
-                </h:panelGrid>
+                    <b:panelGrid columns="3" style="float:right">
+                        <b:commandButton value="Back" action="requestTransport" style="width:80px" look="primary">
+                            <b:iconAwesome name="arrow-left"></b:iconAwesome>
+                        </b:commandButton>
+                        <b:commandButton value="Next" action="#{speditionModel.orderTypeRouting()}" style="width:80px" look="primary" rendered="#{speditionModel.availability}">
+                            <b:iconAwesome name="arrow-right"></b:iconAwesome>
+                        </b:commandButton>
+                        <b:commandButton value="Cancel" action="home" style="width:80px" look="danger">
+                            <b:iconAwesome name="times"></b:iconAwesome>
+                        </b:commandButton>
+                    </b:panelGrid>
+                </b:panelGrid>
 
-                <b:commandButton value="Procceed to specify Order Details" action="#{speditionModel.orderTypeRouting()}" rendered="#{speditionModel.availability}"/>
-                <b:commandButton value="Back" action="requestTransport"/>
-                <b:commandButton value="Cancel" action="home"/>
                 </h:form>
              </f:view>
         </ui:define>

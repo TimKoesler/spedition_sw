@@ -7,11 +7,11 @@
     background-image: url("#{request.contextPath}/resources/images/transportlogistik.png");
     background-repeat: no-repeat;
     background-size: 100px;
-    background-position: 30px;
+    background-position: 25px;
     color: white;
     height: 110px;
-    padding: 5px 5px 15px 180px;
-    margin: 0px 0px 10px 0px;
+    padding: 5px 5px 5px 180px;
+    margin: 0px 0px 5px 0px;
 }
 
 #bottom {
@@ -27,7 +27,7 @@
     background-color: #045491;
     padding: 5px;
     width: 150px;
-    height: auto;
+    height: inherit;
 }
 
 #right {
@@ -51,6 +51,7 @@
     background-color: #dddddd;
     padding: 5px;
     margin-left: 170px;
+    height: auto;
 }
 
 .right_content {
@@ -63,6 +64,7 @@
     color: white;
     font-weight : bold;
     text-decoration: none;
+    padding-bottom: 2px;
 }
 
 #top a:link:hover, #top a:visited:hover  {
